@@ -1,0 +1,30 @@
+{
+	"schemaVersion": 1,
+	"id": "saflib",
+	"version": "${version}",
+	"name": "SafLib",
+	"description": "A library for Safro's mods",
+	"authors": [
+		"Safro"
+	],
+	"contact": {
+		"sources": "https://github.com/Safrodev/SafLib"
+	},
+	"license": "MIT License",
+	"icon": "assets/saflib/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+          "safro.saflib.SafLib"
+		]
+	},
+	"mixins": [
+		"saflib.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.14.21",
+		"minecraft": "~1.19.4",
+		"java": ">=17",
+		"fabric-api": "*"
+	}
+}
