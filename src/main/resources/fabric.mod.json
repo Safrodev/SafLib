@@ -16,6 +16,9 @@
 	"entrypoints": {
 		"main": [
           "safro.saflib.SafLib"
+		],
+		"client": [
+			"safro.saflib.SafLibClient"
 		]
 	},
 	"mixins": [
