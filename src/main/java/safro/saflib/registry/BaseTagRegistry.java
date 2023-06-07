@@ -11,23 +11,23 @@ import net.minecraft.world.biome.Biome;
 
 public class BaseTagRegistry {
 
-    private static TagKey<EntityType<?>> entity(String id, String tag) {
+    protected static TagKey<EntityType<?>> entity(String id, String tag) {
         return TagKey.of(RegistryKeys.ENTITY_TYPE, new Identifier(id, tag));
     }
 
-    private static TagKey<Item> item(String id, String tag) {
+    protected static TagKey<Item> item(String id, String tag) {
         return TagKey.of(RegistryKeys.ITEM, new Identifier(id, tag));
     }
 
-    private static TagKey<Block> block(String id, String tag) {
+    protected static TagKey<Block> block(String id, String tag) {
         return TagKey.of(RegistryKeys.BLOCK, new Identifier(id, tag));
     }
 
-    private static TagKey<Biome> biome(String id, String tag) {
+    protected static TagKey<Biome> biome(String id, String tag) {
         return TagKey.of(RegistryKeys.BIOME, new Identifier(id, tag));
     }
 
-    private static TagKey<Fluid> fluid(String id, String tag) {
+    protected static TagKey<Fluid> fluid(String id, String tag) {
         return TagKey.of(RegistryKeys.FLUID, new Identifier(id, tag));
     }
 }

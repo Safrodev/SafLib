@@ -16,7 +16,7 @@ public class BaseEntityRegistry {
         return Registry.register(Registries.ENTITY_TYPE, new Identifier(RegistryManager.ID, name), type);
     }
 
-    public static void addAttributes(EntityType<? extends LivingEntity> type, DefaultAttributeContainer.Builder builder) {
+    protected static void addAttributes(EntityType<? extends LivingEntity> type, DefaultAttributeContainer.Builder builder) {
         FabricDefaultAttributeRegistry.register(type, builder);
     }
 

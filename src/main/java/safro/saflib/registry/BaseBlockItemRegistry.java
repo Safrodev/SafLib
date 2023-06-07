@@ -24,11 +24,11 @@ public abstract class BaseBlockItemRegistry {
         return registered;
     }
 
-    private static <T extends Block> T register(String name, T block) {
+    protected static <T extends Block> T register(String name, T block) {
         return register(name, block, true);
     }
 
-    private static <T extends Block> T register(String name, T block, boolean createItem) {
+    protected static <T extends Block> T register(String name, T block, boolean createItem) {
         Registry.register(Registries.BLOCK, new Identifier(RegistryManager.ID, name), block);
         if (createItem) {
             register(name, new BlockItem(block, settings()));
@@ -36,7 +36,7 @@ public abstract class BaseBlockItemRegistry {
         return block;
     }
 
-    private static <T extends BlockEntity> BlockEntityType<T> register(String name, FabricBlockEntityTypeBuilder.Factory<T> factory, Block... blocks) {
+    protected static <T extends BlockEntity> BlockEntityType<T> register(String name, FabricBlockEntityTypeBuilder.Factory<T> factory, Block... blocks) {
         return Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(RegistryManager.ID, name), FabricBlockEntityTypeBuilder.create(factory, blocks).build());
     }
 }
