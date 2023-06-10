@@ -1,5 +1,7 @@
 package safro.saflib.network;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -48,6 +50,7 @@ public class ParticlePacket {
         ServerPlayNetworking.send(player, ID, buf);
     }
 
+    @Environment(EnvType.CLIENT)
     public static void receive(MinecraftClient client, PacketByteBuf buf) {
         if (client.world != null) {
             ParticleEffect effect = readEffect(buf, buf.readRegistryValue(Registries.PARTICLE_TYPE));

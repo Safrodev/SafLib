@@ -6,6 +6,9 @@
 		"PlayerEntityMixin",
 		"LivingEntityMixin"
 	],
+	"client": [
+		"CreativeInventoryScreenMixin"
+	],
 	"injectors": {
 		"defaultRequire": 1
 	}
