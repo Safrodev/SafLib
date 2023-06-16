@@ -11,9 +11,11 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 
 public class BaseEntityRegistry {
+    // Set this to your modid in the registry init function
+    protected static String MODID = "";
 
     protected static <T extends Entity> EntityType<T> register(String name, EntityType<T> type) {
-        return Registry.register(Registries.ENTITY_TYPE, new Identifier(RegistryManager.ID, name), type);
+        return Registry.register(Registries.ENTITY_TYPE, new Identifier(MODID, name), type);
     }
 
     protected static void addAttributes(EntityType<? extends LivingEntity> type, DefaultAttributeContainer.Builder builder) {

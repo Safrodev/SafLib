@@ -9,15 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RegistryManager {
-    // Fallback/default modid
+    @Deprecated
     protected static String ID = "saflib";
-    // Fallback/default items list
     protected static List<ItemStack> ITEMS = new ArrayList<>();
 
     public static void registerAll(RegistryKey<ItemGroup> group) {
         ItemGroupEvents.modifyEntriesEvent(group).register(entries -> entries.addAll(ITEMS));
+        ITEMS.clear();
     }
 
+    @Deprecated
+    // Use built-in mod id variable instead
     public static void setId(String name) {
         ID = name;
     }

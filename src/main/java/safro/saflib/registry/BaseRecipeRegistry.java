@@ -8,9 +8,11 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 
 public class BaseRecipeRegistry {
+    // Set this to your modid in the registry init function
+    protected static String MODID = "";
 
     protected static <T extends Recipe<?>> RecipeType<T> register(String id) {
-        return Registry.register(Registries.RECIPE_TYPE, new Identifier(RegistryManager.ID, id), new RecipeType<T>() {
+        return Registry.register(Registries.RECIPE_TYPE, new Identifier(MODID, id), new RecipeType<T>() {
             public String toString() {
                 return id;
             }
@@ -18,6 +20,6 @@ public class BaseRecipeRegistry {
     }
 
     protected static <S extends RecipeSerializer<T>, T extends Recipe<?>> S register(String id, S serializer) {
-        return Registry.register(Registries.RECIPE_SERIALIZER, new Identifier(RegistryManager.ID, id), serializer);
+        return Registry.register(Registries.RECIPE_SERIALIZER, new Identifier(MODID, id), serializer);
     }
 }
