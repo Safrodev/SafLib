@@ -1,6 +1,7 @@
 package safro.saflib.registry;
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
@@ -11,9 +12,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
+import safro.saflib.SafLib;
 
 public abstract class BaseBlockItemRegistry {
-    // Set this to your modid in the registry init function
+    // Set this to your modid at the top of your class in a 'static' body
     protected static String MODID = "";
 
     protected static FabricItemSettings settings() {
@@ -22,7 +24,7 @@ public abstract class BaseBlockItemRegistry {
 
     protected static <T extends Item> T register(String name, T item) {
         T registered = Registry.register(Registries.ITEM, new Identifier(MODID, name), item);
-        RegistryManager.ITEMS.add(new ItemStack(registered));
+        SafLib.ITEMS.add(new ItemStack(registered));
         return registered;
     }
 

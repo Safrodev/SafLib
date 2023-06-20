@@ -45,13 +45,21 @@ public class MathUtil {
     }
 
     // Returns a list which contains a line of vectors with the desired frequency (spacing)
-    public static List<Vec3d> getLine(Vec3d point1, Vec3d point2, double spacing) {
+    public static List<Vec3d> getLine(Vec3d start, Vec3d end) {
         List<Vec3d> list = new ArrayList<>();
-        double distance = point1.distanceTo(point2);
-        Vec3d disVec = new Vec3d(point2.getX(), point2.getY(), point2.getZ()).subtract(point1).normalize().multiply(spacing);
-        for (double length = 0.0D; length < distance; point1.add(disVec)) {
-            list.add(new Vec3d(point1.getX(), point1.getY(), point1.getZ()));
-            length += spacing;
+        double deltaX = end.getX() - start.getX();
+        double deltaY = end.getY() - start.getY();
+        double deltaZ = end.getZ() - start.getZ();
+        double distance = Math.max(Math.abs(deltaX), Math.max(Math.abs(deltaY), Math.abs(deltaZ)));
+        double stepX = deltaX / distance;
+        double stepY = deltaY / distance;
+        double stepZ = deltaZ / distance;
+
+        for (int i = 0; i < distance; i++) {
+            double x = start.getX() + stepX * i;
+            double y = start.getY() + stepY * i;
+            double z = start.getZ() + stepZ * i;
+            list.add(new Vec3d(x, y, z));
         }
         return list;
     }
