@@ -9,7 +9,11 @@ import java.util.List;
 
 public class MathUtil {
 
-    // Returns a list which contains a sphere of BlockPos in the designated radius
+    /**
+     * @param origin the center of the sphere
+     * @param radius the radius of the sphere
+     * @return a list of BlockPos that contains all the blocks inside the sphere
+     */
     public static List<BlockPos> getPosSphere(BlockPos origin, int radius) {
         List<BlockPos> blocks = new ArrayList<>();
         for (int x = -radius; x < radius; x++) {
@@ -25,7 +29,15 @@ public class MathUtil {
         return blocks;
     }
 
-    // Returns a list which contains a circle of vectors in the designated radius and frequency (amount)
+    /**
+     * @param x center-x
+     * @param y center-y
+     * @param z center-z
+     * @param radius radius of the circle
+     * @param amount frequency of particles
+     * @param axis rotation of the circle by axis
+     * @return Returns a list of vectors that make up the circle
+     */
     public static List<Vec3d> getCircle(double x, double y, double z, double radius, int amount, Direction.Axis axis) {
         List<Vec3d> list = new ArrayList<>();
         int count = (int) (2 * Math.PI * radius * amount);
@@ -44,8 +56,15 @@ public class MathUtil {
         return list;
     }
 
-    // Returns a list which contains a line of vectors with the desired frequency (spacing)
-    public static List<Vec3d> getLine(Vec3d start, Vec3d end) {
+    /**
+     * @param start first endpoint
+     * @param end second endpoint
+     * @param spacing the spacing between particles
+     *                Use a smaller value (Ex. 0.1) for closer, more frequent particles
+     *                and a larger value (Ex. 1) for farther, less frequent particles
+     * @return Returns a list of vectors that make up a line
+     */
+    public static List<Vec3d> getLine(Vec3d start, Vec3d end, double spacing) {
         List<Vec3d> list = new ArrayList<>();
         double deltaX = end.getX() - start.getX();
         double deltaY = end.getY() - start.getY();
@@ -55,7 +74,7 @@ public class MathUtil {
         double stepY = deltaY / distance;
         double stepZ = deltaZ / distance;
 
-        for (int i = 0; i < distance; i++) {
+        for (double i = 0.0; i < distance; i += spacing) {
             double x = start.getX() + stepX * i;
             double y = start.getY() + stepY * i;
             double z = start.getZ() + stepZ * i;

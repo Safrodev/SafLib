@@ -30,24 +30,40 @@ public class SafLib implements ModInitializer {
 		PacketRegistry.initServer();
 	}
 
+	/**
+	 * Creates a RegistryKey for an ItemGroup
+	 * @param modid - Your Mod ID
+	 * @return a RegistryKey
+	 */
 	public static RegistryKey<ItemGroup> createGroup(String modid) {
 		return RegistryKey.of(RegistryKeys.ITEM_GROUP, new Identifier(modid, "item_group"));
 	}
 
-	// Call this after registering all objects in your onInitialize method
+	/**
+	 * Call this after registering all objects in your onInitialize method
+	 * @param key - Your itemgroup key
+	 * @param groupIcon - The item to be used for your item group icon
+	 */
 	public static void registerAll(RegistryKey<ItemGroup> key, ItemConvertible groupIcon) {
 		String modid = key.getValue().getNamespace();
 		Registry.register(Registries.ITEM_GROUP, key, FabricItemGroup.builder().displayName(Text.translatable("itemGroup." + modid + "." + modid))
-				.icon(() -> new ItemStack(groupIcon)).entries((displayContext, entries) -> entries.addAll(ITEMS)).build());
+				.icon(() -> new ItemStack(groupIcon)).entries((displayContext, entries) -> entries.addAll(getItemsFor(modid))).build());
 	}
 
-	// It is not recommended to use search groups as they are still buggy
-	// Use at your own risk, these will be completed soon
+	/**
+	 * It is not recommended to use search groups as they are still buggy
+	 * Use at your own risk, these will be completed soon
+	 * @param key - Your itemgroup key
+	 * @param icon - The item to be used for your item group icon
+	 */
 	@ApiStatus.Experimental
-	public static RegistryKey<ItemGroup> createSearchGroup(String modid, ItemConvertible icon) {
-		RegistryKey<ItemGroup> key = RegistryKey.of(RegistryKeys.ITEM_GROUP, new Identifier(modid, "item_group"));
+	public static void createSearchGroup(RegistryKey<ItemGroup> key, ItemConvertible icon) {
+		String modid = key.getValue().getNamespace();
 		SearchItemGroup group = SearchItemGroup.builder().displayName(Text.translatable("itemGroup." + modid + "." + modid)).icon(() -> new ItemStack(icon)).build();
 		Registry.register(Registries.ITEM_GROUP, key, group);
-		return key;
+	}
+
+	public static List<ItemStack> getItemsFor(String modid) {
+		return new ArrayList<>(ITEMS.stream().filter(stack -> Registries.ITEM.getId(stack.getItem()).getNamespace().equals(modid)).toList());
 	}
 }
