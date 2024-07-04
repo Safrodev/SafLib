@@ -1,64 +1,48 @@
 package safro.saflib.network;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
-import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.s2c.play.ParticleS2CPacket;
 import net.minecraft.particle.ParticleEffect;
-import net.minecraft.particle.ParticleType;
-import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-import safro.saflib.SafLib;
+import net.minecraft.util.math.Vec3d;
 
+// As of 1.21, this makes use of the builtin ParticleS2CPacket instead of implementing a custom one
 public class ParticlePacket {
-    public static final Identifier ID = new Identifier(SafLib.MODID, "spawn_particles");
 
     // Sends particles to players tracking the Entity
-    public static void send(Entity entity, ParticleEffect effect, double x, double y, double z, double vX, double vY, double vZ) {
-        PlayerLookup.tracking(entity).forEach(player -> send(player, effect, x, y, z, vX, vY, vZ));
+    public static void send(Entity entity, ParticleEffect effect, boolean force, double x, double y, double z, double speed) {
+        PlayerLookup.tracking(entity).forEach(player -> send(player, effect, force, x, y, z, speed));
     }
 
     // Sends particles to players tracking the BlockEntity
-    public static void send(BlockEntity blockEntity, ParticleEffect effect, double x, double y, double z, double vX, double vY, double vZ) {
-        PlayerLookup.tracking(blockEntity).forEach(player -> send(player, effect, x, y, z, vX, vY, vZ));
+    public static void send(BlockEntity blockEntity, ParticleEffect effect, boolean force, double x, double y, double z, double speed) {
+        PlayerLookup.tracking(blockEntity).forEach(player -> send(player, effect, force, x, y, z, speed));
     }
 
     // Sends particles to players tracking the BlockPos
-    public static void send(ServerWorld world, BlockPos pos, ParticleEffect effect, double x, double y, double z, double vX, double vY, double vZ) {
-        PlayerLookup.tracking(world, pos).forEach(player -> send(player, effect, x, y, z, vX, vY, vZ));
+    public static void send(ServerWorld world, BlockPos pos, ParticleEffect effect, boolean force, double x, double y, double z, double speed) {
+        PlayerLookup.tracking(world, pos).forEach(player -> send(player, effect, force, x, y, z, speed));
     }
 
-    // Sends particles to the player
-    public static void send(ServerPlayerEntity player, ParticleEffect effect, double x, double y, double z, double vX, double vY, double vZ) {
-        PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeRegistryValue(Registries.PARTICLE_TYPE, effect.getType());
-        effect.write(buf);
-        buf.writeDouble(x);
-        buf.writeDouble(y);
-        buf.writeDouble(z);
-        buf.writeDouble(vX);
-        buf.writeDouble(vY);
-        buf.writeDouble(vZ);
-        ServerPlayNetworking.send(player, ID, buf);
-    }
-
-    @Environment(EnvType.CLIENT)
-    public static void receive(MinecraftClient client, PacketByteBuf buf) {
-        if (client.world != null) {
-            ParticleEffect effect = readEffect(buf, buf.readRegistryValue(Registries.PARTICLE_TYPE));
-            client.world.addParticle(effect, buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readDouble());
+    /**
+     * @param player - the player who will see the particles
+     * @param effect - the particle effect
+     * @param force - if true, the max distance the particles can be seen is 512 blocks; if false, max is 32 blocks
+     * @param x - x coord
+     * @param y - y coord
+     * @param z - z coord
+     * @param speed - particle velocity; set to 0.0F for default
+     */
+    public static void send(ServerPlayerEntity player, ParticleEffect effect, boolean force, double x, double y, double z, double speed) {
+        Packet<?> packet = new ParticleS2CPacket(effect, force, x, y, z, 1.0F, 1.0F, 1.0F, (float)speed, 0);
+        BlockPos blockPos = player.getBlockPos();
+        if (blockPos.isWithinDistance(new Vec3d(x, y, z), force ? 512.0D : 32.0D)) {
+            player.networkHandler.sendPacket(packet);
         }
-    }
-
-    private static <T extends ParticleEffect> T readEffect(PacketByteBuf buf, ParticleType<T> type) {
-        return type.getParametersFactory().read(type, buf);
     }
 }

@@ -36,7 +36,7 @@ public class SafLib implements ModInitializer {
 	 * @return a RegistryKey
 	 */
 	public static RegistryKey<ItemGroup> createGroup(String modid) {
-		return RegistryKey.of(RegistryKeys.ITEM_GROUP, new Identifier(modid, "item_group"));
+		return RegistryKey.of(RegistryKeys.ITEM_GROUP, Identifier.of(modid, "item_group"));
 	}
 
 	/**
@@ -56,12 +56,12 @@ public class SafLib implements ModInitializer {
 	 * @param key - Your itemgroup key
 	 * @param icon - The item to be used for your item group icon
 	 */
-	@ApiStatus.Experimental
-	public static void createSearchGroup(RegistryKey<ItemGroup> key, ItemConvertible icon) {
-		String modid = key.getValue().getNamespace();
-		SearchItemGroup group = SearchItemGroup.builder().displayName(Text.translatable("itemGroup." + modid + "." + modid)).icon(() -> new ItemStack(icon)).build();
-		Registry.register(Registries.ITEM_GROUP, key, group);
-	}
+//	@ApiStatus.Experimental
+//	public static void createSearchGroup(RegistryKey<ItemGroup> key, ItemConvertible icon) {
+//		String modid = key.getValue().getNamespace();
+//		SearchItemGroup group = SearchItemGroup.builder().displayName(Text.translatable("itemGroup." + modid + "." + modid)).icon(() -> new ItemStack(icon)).build();
+//		Registry.register(Registries.ITEM_GROUP, key, group);
+//	}
 
 	public static List<ItemStack> getItemsFor(String modid) {
 		return new ArrayList<>(ITEMS.stream().filter(stack -> Registries.ITEM.getId(stack.getItem()).getNamespace().equals(modid)).toList());

@@ -14,6 +14,6 @@ public class DamageSourceUtil {
     }
 
     public static RegistryKey<DamageType> register(String modid, String name) {
-        return RegistryKey.of(RegistryKeys.DAMAGE_TYPE, new Identifier(modid, name));
+        return RegistryKey.of(RegistryKeys.DAMAGE_TYPE, Identifier.of(modid, name));
     }
 }

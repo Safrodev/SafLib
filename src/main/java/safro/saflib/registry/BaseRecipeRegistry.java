@@ -12,7 +12,7 @@ public class BaseRecipeRegistry {
     protected static String MODID = "";
 
     protected static <T extends Recipe<?>> RecipeType<T> register(String id) {
-        return Registry.register(Registries.RECIPE_TYPE, new Identifier(MODID, id), new RecipeType<T>() {
+        return Registry.register(Registries.RECIPE_TYPE, Identifier.of(MODID, id), new RecipeType<T>() {
             public String toString() {
                 return id;
             }
@@ -20,6 +20,6 @@ public class BaseRecipeRegistry {
     }
 
     protected static <S extends RecipeSerializer<T>, T extends Recipe<?>> S register(String id, S serializer) {
-        return Registry.register(Registries.RECIPE_SERIALIZER, new Identifier(MODID, id), serializer);
+        return Registry.register(Registries.RECIPE_SERIALIZER, Identifier.of(MODID, id), serializer);
     }
 }

@@ -1,8 +1,10 @@
 package safro.saflib.group;
 
 import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemGroups;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.function.Supplier;
@@ -19,8 +21,8 @@ public class SearchItemGroup extends ItemGroup {
     }
 
     @Override
-    public String getTexture() {
-        return "item_search.png";
+    public Identifier getTexture() {
+        return ItemGroup.getTabTextureId("item_search");
     }
 
     public static class Builder {

@@ -15,7 +15,7 @@ public class BaseEntityRegistry {
     protected static String MODID = "";
 
     protected static <T extends Entity> EntityType<T> register(String name, EntityType<T> type) {
-        return Registry.register(Registries.ENTITY_TYPE, new Identifier(MODID, name), type);
+        return Registry.register(Registries.ENTITY_TYPE, Identifier.of(MODID, name), type);
     }
 
     protected static void addAttributes(EntityType<? extends LivingEntity> type, DefaultAttributeContainer.Builder builder) {
